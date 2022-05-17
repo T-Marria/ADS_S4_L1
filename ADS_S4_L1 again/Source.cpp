@@ -7,6 +7,14 @@ int main()
 	shapes.Insert(3, "triangle");
 	shapes.Insert(4, "rectangle");
 	shapes.Insert(2, "line");
+	shapes.Insert(10, "decagon");
+	shapes.Insert(-3, "(((");
+	shapes.Insert(-7, "((((((");
+	shapes.Insert(25, "25dots");
+	shapes.Insert(9, "nonagon");
+	shapes.Insert(90, "90dots");
+	shapes.Insert(0, "zero");
+
 	try
 	{
 		string found;
@@ -24,4 +32,9 @@ int main()
 	shapes.Erase(2);
 	shapes.Insert(6, "hexagon");
 	shapes.Print();
+
+	cout << "_________________" << endl;
+	shapes.PrintTree();
+
+	return 0;
 }

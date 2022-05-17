@@ -16,8 +16,10 @@ struct Tree {
 class Map {
 private:
     Tree* root;
-    void Print(Tree* tree) const;
-    Tree* Insert(Tree** tree, int key, string data);
+    void _Print(Tree* tree) const;
+    void _PrintTree(Tree* p, int level) const;
+    Tree* _Insert(Tree* root, int key, string value);
+    Tree* _Erase(Tree* root, int key);
     unsigned _Height(Tree* root);
     void _Fix_height(Tree* root);
     int _Balance_factor(Tree* root);
@@ -29,7 +31,8 @@ private:
 public:
     Map();
     void Print() const;
+    void PrintTree() const;
     bool Insert(int key, string data);
     const string& Find(int key) const;
-    Tree* Erase(int key);
+    bool Erase(int key);
 };

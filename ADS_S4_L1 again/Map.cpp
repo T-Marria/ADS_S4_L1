@@ -6,39 +6,97 @@ Map::Map()
 	root = NULL;
 }
 
-void Map::Print(Tree* tree) const
+void Map::_Print(Tree* tree) const
 {
 	if (tree)
 	{
-		Print(tree->left);
+		_Print(tree->left);
 		cout << tree->data << " ";
-		Print(tree->right);
+		_Print(tree->right);
 	}
 }
 
-Tree* Map::Insert(Tree** tree, int key, string data)
+void Map::_PrintTree(Tree* p, int level) const
 {
-	if (*tree == NULL)
+	if (p)
 	{
-		*tree = new Tree(key, data);
-		 return _Balance(root);;
+		_PrintTree(p->left, level + 1);
+		for (int i = 0; i < level; i++) cout << "   ";
+		cout << p->key << endl;
+		_PrintTree(p->right, level + 1);
 	}
-	else if ((*tree)->key > key)
-		return Insert(&(*tree)->left, key, data);
-	else if ((*tree)->key < key)
-		return Insert(&(*tree)->right, key, data);
-	return false;
+}
+
+Tree* Map::_Insert(Tree* root, int key, string value)
+{
+	if (!root)
+	{
+		root = new Tree(key, value);
+	}
+	else
+	{
+		if (key < root->key)
+		{
+			root->left = _Insert(root->left, key, value);
+		}
+		else if (key > root->key)
+		{
+			root->right = _Insert(root->right, key, value);
+		}
+		else throw "Element already exists";
+	}
+	return _Balance(root);
+}
+
+Tree* Map::_Erase(Tree* root, int key)
+{
+	if (!root)
+		return nullptr;
+	if (key < root->key)
+	{
+		root->left = _Erase(root->left, key);
+	}
+	else if (key > root->key)
+	{
+		root->right = _Erase(root->right, key);
+	}
+	else
+	{
+		Tree* temp_l = root->left;
+		Tree* temp_r = root->right;
+		delete root;
+		if (!temp_r) return temp_l;
+		if (!temp_l) return temp_r;
+		Tree* min = _Find_min(temp_r);
+		min->right = _Erase_min(temp_r);
+		min->left = temp_l;
+		return _Balance(min);
+	}
+	return _Balance(root);
 }
 
 void Map::Print() const
 {
-	Print(root);
+	_Print(root);
+	cout << endl;
+}
+
+void Map::PrintTree() const
+{
+	_PrintTree(root, 1);
 	cout << endl;
 }
 
 bool Map::Insert(int key, string data)
 {
-	return Insert(&root, key, data);
+	root = _Insert(root, key, data);
+	return true;
+}
+
+bool Map::Erase(int key)
+{
+	root = _Erase(root, key);
+	return true;
 }
 
 const string& Map::Find(int key) const
@@ -61,49 +119,6 @@ const string& Map::Find(int key) const
 			continue;
 		}
 	}
-}
-
-bool Map::Erase(int key)
-{
-	Tree* tree = root;
-	Tree* prev = NULL;
-	while (tree && tree->key != key)
-	{
-		prev = tree;
-		if (tree->key > key)
-		{
-			tree = tree->left;
-		}
-		else
-		{
-			tree = tree->right;
-		}
-	}
-	if (tree == NULL)
-		return false;
-	if (tree->left == NULL)
-	{
-		if (prev && prev->left == tree)
-			prev->left = tree->right;
-		if (prev && prev->right == tree)
-			prev->right = tree->right;
-		delete tree;
-		return true;
-	}
-	if (tree->right == NULL)
-	{
-		if (prev && prev->left == tree)
-			prev->left = tree->left;
-		if (prev && prev->right == tree)
-			prev->right = tree->left;
-		delete tree;
-		return true;
-	}
-	Tree* subst = tree->right;
-	while (subst->left)
-		subst = subst->left;
-	Erase(subst->key);
-	tree->key = subst->key;
 }
 
 unsigned Map::_Height(Tree* root)
