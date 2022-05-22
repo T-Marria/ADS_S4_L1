@@ -20,10 +20,10 @@ void Map::_PrintTree(Tree* p, int level) const
 {
 	if (p)
 	{
-		_PrintTree(p->left, level + 1);
+		_PrintTree(p->right, level + 1);
 		for (int i = 0; i < level; i++) cout << "   ";
 		cout << p->key << endl;
-		_PrintTree(p->right, level + 1);
+		_PrintTree(p->left, level + 1);
 	}
 }
 
