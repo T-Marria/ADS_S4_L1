@@ -10,7 +10,7 @@ struct Tree {
     Tree* left;
     Tree* right;
     int height;
-    Tree(int k, string v) : key(k), data(v), left(nullptr), right(nullptr), height(1) {}
+    Tree(int k, string value) : key(k), data(value), left(nullptr), right(nullptr), height(1) {}
 };
 
 class Map {

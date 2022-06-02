@@ -16,14 +16,14 @@ void Map::_Print(Tree* tree) const
 	}
 }
 
-void Map::_PrintTree(Tree* p, int level) const
+void Map::_PrintTree(Tree* tree, int level) const
 {
-	if (p)
+	if (tree)
 	{
-		_PrintTree(p->right, level + 1);
+		_PrintTree(tree->right, level + 1);
 		for (int i = 0; i < level; i++) cout << "   ";
-		cout << p->key << endl;
-		_PrintTree(p->left, level + 1);
+		cout << tree->key << endl;
+		_PrintTree(tree->left, level + 1);
 	}
 }
 
@@ -43,7 +43,7 @@ Tree* Map::_Insert(Tree* root, int key, string value)
 		{
 			root->right = _Insert(root->right, key, value);
 		}
-		else throw "Element already exists";
+		else throw "Element already exists\n";
 	}
 	return _Balance(root);
 }
@@ -106,31 +106,25 @@ const string& Map::Find(int key) const
 	{
 		if (tree == NULL)
 			throw "error: not found\n";
+
 		if (tree->key == key)
 			return tree->data;
+
 		if (tree->key > key)
-		{
 			tree = tree->left;
-			continue;
-		}
+
 		if (tree->key < key)
-		{
 			tree = tree->right;
-			continue;
-		}
 	}
 }
 
 unsigned Map::_Height(Tree* root)
 {
 	if (root)
-	{
 		return root->height;
-	}
+
 	else
-	{
 		return 0;
-	}
 }
 
 void Map::_Fix_height(Tree* root)
@@ -138,13 +132,10 @@ void Map::_Fix_height(Tree* root)
 	unsigned hl = _Height(root->left);
 	unsigned hr = _Height(root->right);
 	if (hl > hr)
-	{
 		root->height = hl + 1;
-	}
+
 	else
-	{
 		root->height = hr + 1;
-	}
 }
 
 int Map::_Balance_factor(Tree* root)
@@ -193,13 +184,10 @@ Tree* Map::_Rotate_right(Tree* root)
 Tree* Map::_Find_min(Tree* root)
 {
 	if (root->left)
-	{
 		return _Find_min(root->left);
-	}
+
 	else
-	{
 		return root;
-	}
 }
 
 Tree* Map::_Erase_min(Tree* root)
